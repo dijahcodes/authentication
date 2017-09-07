@@ -10,7 +10,7 @@ use Hash;
 use Auth;
 use JWTAuth;
 
-use APP\User;
+use App\User;
 
 class AuthController extends Controller
 {
@@ -26,11 +26,11 @@ class AuthController extends Controller
       'password' => 'required'
     ];
 
-    $validator = Vaidator::make(Purifier::clean($rewuest->all()), $rules);
+    $validator = Validator::make(Purifier::clean($request->all()), $rules);
 
     if($validator->fails())
     {
-      return Response:;json(['error' => 'Please fill out all fields.']);
+      return Response::json(['error' => 'Please fill out all fields.']);
     }
 
     $email = $request->input('email');
@@ -42,7 +42,7 @@ class AuthController extends Controller
     $user = new User;
     $user->email = $email;
     $user->name = $name;
-    $user->password - $password;
+    $user->password = $password;
     $user->roleID = 2;
     $user->save();
 
@@ -58,7 +58,7 @@ class AuthController extends Controller
 
       ];
 
-      $validator = Validator::male(Purifier::clean($request->all()), $rules);
+      $validator = Validator::make(Purifier::clean($request->all()), $rules);
 
       if($validator-> fails())
       {
@@ -66,7 +66,7 @@ class AuthController extends Controller
       }
 
       $email = $request->input('email');
-      $password = $request->input('password')
+      $password = $request->input('password');
       $credentials = compact("email", "password");
 
       $token = JWTAuth::attempt($credentials);
