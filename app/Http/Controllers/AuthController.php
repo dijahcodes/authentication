@@ -9,6 +9,7 @@ use Purifier;
 use Hash;
 use Auth;
 use JWTAuth;
+use Carbon\Carbon;
 
 use App\User;
 
@@ -22,8 +23,9 @@ class AuthController extends Controller
     {
       $rules = [
       'email' => 'required',
-      'name' => 'required',
-      'password' => 'required'
+      'username' => 'required',
+      'password' => 'required',
+      'dateOfBirth' => 'required'
     ];
 
     $validator = Validator::make(Purifier::clean($request->all()), $rules);
@@ -35,7 +37,15 @@ class AuthController extends Controller
 
     $email = $request->input('email');
     $name = $request->input('name');
+    $birthDate = $request->input('dateOfBirth');
     $password = $request->input('password');
+
+    // $then will first be a string-date
+    $age = Carbon::parse($birthDate)->age;
+    if($age < 13)  {
+      return Response::json(['error' => "You're too young, sonny. Go home."]);
+    }
+
 
     $password = Hash::make($password);
 
@@ -43,6 +53,7 @@ class AuthController extends Controller
     $user->email = $email;
     $user->name = $name;
     $user->password = $password;
+    $user->dateOfBirth = $dateOfBirth;
     $user->roleID = 2;
     $user->save();
 
