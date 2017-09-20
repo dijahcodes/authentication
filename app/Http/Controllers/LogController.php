@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Response;
 use Purifier;
 
-use App\Logs;
+use App\Log;
 
 class LogController extends Controller
 {
@@ -18,31 +18,46 @@ class LogController extends Controller
       return Response::json(['logs' => $logs]);
     }
 
-    public function (Request $request)
+    public function store(Request $request)
     {
       $rules = [
-        'logContent'=> 'required'
+        'food'=> 'required',
+        'calories' => 'required',
+        'fat' => 'required',
+        'carbs' => 'required',
+        'sugars' => 'required',
+        'allergens' => 'required'
       ];
 
       $validator = Validator::make(Purifier::clean($request->all()), $rules);
 
       if ($validator->fails())
       {
-        return Response::json(['error' => 'Please fill out all fields.'])
+        return Response::json(['error' => 'Please fill out all fields.']);
       }
 
-      $logContent = $request->input('logContent');
+      $food = $request->input('food');
+      $calories = $request->input('calories');
+      $fat = $request->input('fat');
+      $carbs = $request->input('carbs');
+      $sugars = $request->input('sugars');
+      $allergens = $request->input('allergens');
 
-      $logs = new Logs;
-      $logs->logContent = $logContent;
+      $logs = new Log;
+      $logs->food = $food;
+      $logs->calories = $calories;
+      $logs->fat = $fat;
+      $logs->carbs = $carbs;
+      $logs->sugars = $sugars;
+      $logs->allergens = $allergens;
       $logs->save();
 
-      return Response::json(['logs' => $logs);
+      return Response::json(['logs' => $logs]);
     }
 
-    public funciton ($id)
+    public function show($id)
     {
-      $logs = Logs::find($id);
+      $logs = Log::find($id);
 
       return Response::json(['logs' => $logs]);
     }

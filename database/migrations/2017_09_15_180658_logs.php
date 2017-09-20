@@ -15,13 +15,12 @@ class Logs extends Migration
     {
         Schema::create('logs', function(Blueprint $table) {
           $table->increments('id');
-          $table->string('logContent');
           $table->string('food');
           $table->string('calories');
           $table->string('fat');
           $table->string('carbs');
           $table->string('sugars');
-          $table->longText('allergen');
+          $table->longText('allergens');
           $table->timestamps();
 
         });
