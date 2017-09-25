@@ -36,12 +36,12 @@ class AuthController extends Controller
     }
 
     $email = $request->input('email');
-    $name = $request->input('name');
-    $birthDate = $request->input('dateOfBirth');
+    $username = $request->input('username');
+    $dateOfBirth= $request->input('dateOfBirth');
     $password = $request->input('password');
 
     // $then will first be a string-date
-    $age = Carbon::parse($birthDate)->age;
+    $age = Carbon::parse($dateOfBirth)->age;
     if($age < 13)  {
       return Response::json(['error' => "You're too young, sonny. Go home."]);
     }
@@ -51,7 +51,7 @@ class AuthController extends Controller
 
     $user = new User;
     $user->email = $email;
-    $user->name = $name;
+    $user->username = $username;
     $user->password = $password;
     $user->dateOfBirth = $dateOfBirth;
     $user->roleID = 2;
